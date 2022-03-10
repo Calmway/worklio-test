@@ -4,6 +4,8 @@
       v-model.trim="searchText"
       type="text"
       placeholder="Search or Add..."
+      @keyup.enter="addPerson"
+      @keydown.esc="cancelSearch"
       @input="foundMatched" />
 
     <div class="input-icons">
@@ -36,7 +38,10 @@ export default defineComponent({
   setup(props: any, { emit }) {
     const searchText = ref('');
     const exist = computed(() =>
-      props.list.some((x: Item) => x.name === searchText.value)
+      props.list.some(
+        (x: Item) =>
+          x.name.toLocaleLowerCase() == searchText.value.toLocaleLowerCase()
+      )
     );
     function addPerson() {
       if (!searchText.value) {
@@ -50,8 +55,13 @@ export default defineComponent({
       searchText.value = '';
     }
     function foundMatched() {
-      if (props.list.some((x: Item) => x.name === searchText.value)) {
-        emit('foundMatched', searchText.value);
+      if (
+        props.list.some(
+          (x: Item) =>
+            x.name.toLocaleLowerCase() == searchText.value.toLocaleLowerCase()
+        )
+      ) {
+        emit('foundMatched', searchText.value.toLocaleLowerCase());
       } else {
         emit('foundMatched', '');
       }

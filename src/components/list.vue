@@ -33,7 +33,7 @@
         <p style="margin: 0">{{ item.name }}</p>
 
         <p class="fs-12" style="margin: 0">
-          <span v-if="found == item.name"
+          <span v-if="found == item.name.toLocaleLowerCase()"
             ><span class="green">Exact match</span>, </span
           ><span class="gray">#{{ item.id }}</span>
         </p>
